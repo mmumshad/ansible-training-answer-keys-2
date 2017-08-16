@@ -1,0 +1,34 @@
+# Update the msg field in debug task to print the lowest number in the given list using jinja2 filter "min" - "Lowest = 6"
+# Documentation: http://docs.ansible.com/ansible/latest/playbooks_filters.html#filters-for-formatting-data
+
+# ------------------------------
+#           BEFORE
+# ------------------------------
+#-
+#  name: Test Jinja2 Templating
+#  hosts: localhost
+#  vars:
+#    array_of_numbers:
+#      - 12
+#      - 34
+#      - 06
+#      - 34
+#  tasks:
+#  - debug:
+#      msg: 'Lowest = '
+
+# ------------------------------
+#           AFTER
+# ------------------------------
+-
+  name: Test Jinja2 Templating
+  hosts: localhost
+  vars:
+    array_of_numbers:
+      - 12
+      - 34
+      - 06
+      - 34
+  tasks:
+  - debug:
+      msg: 'Lowest = {{ array_of_numbers | min }}'

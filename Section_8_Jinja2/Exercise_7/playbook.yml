@@ -1,0 +1,29 @@
+# Retrieve the file name from a given path in linux
+# Task: Use the 'basename' filter to retrieve the file name
+# Documentation: http://docs.ansible.com/ansible/latest/playbooks_filters.html#filters-for-formatting-data
+
+# ------------------------------
+#           BEFORE
+# ------------------------------
+#-
+#  name: Get filename
+#  hosts: localhost
+#  vars:
+#    file_path: /etc/hosts
+#  tasks:
+#  - name: Get filename
+#    debug:
+#      msg: File Name = {{file_path }}
+# ------------------------------
+#           AFTER
+# ------------------------------
+-
+  name: Get filename
+  hosts: localhost
+  vars:
+    file_path: /etc/hosts
+  tasks:
+  - name: Get filename
+    debug:
+      msg: File Name = {{file_path | basename}}
+

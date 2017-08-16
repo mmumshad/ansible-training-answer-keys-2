@@ -1,0 +1,30 @@
+# Test if a given variable has a valid IP address.
+# Task: Apply the ipaddr filter to the ip_address in the msg field of debug task to test if IP is valid. It will return false if IP is invalid
+# Documentation: http://docs.ansible.com/ansible/latest/playbooks_filters.html#filters-for-formatting-data
+
+# ------------------------------
+#           BEFORE
+# ------------------------------
+#-
+#  name: Test valid IP Address
+#  hosts: localhost
+#  vars:
+#    ip_address: 192.168.1.s
+#  tasks:
+#  - name: Test IP Address
+#    debug:
+#      msg: IP Address = {{ ip_address }}
+
+# ------------------------------
+#           AFTER
+# ------------------------------
+-
+  name: Test valid IP Address
+  hosts: localhost
+  vars:
+    ip_address: 192.168.1.6
+  tasks:
+  - name: Test IP Address
+    debug:
+      msg: IP Address = {{ ip_address | ipaddr }}
+

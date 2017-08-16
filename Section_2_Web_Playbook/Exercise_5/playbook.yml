@@ -1,0 +1,69 @@
+# Now let us create application database on the sql server.
+# Create a new task and use "mysql_db" module to create a new database by the name "employee_db".
+# Refer to mysql_db module documentation - http://docs.ansible.com/ansible/latest/mysql_db_module.html
+#
+## ------------------------------
+##           BEFORE
+## ------------------------------
+#-
+#  name: Deploy a web application
+#  hosts: db_and_web_server
+#  tasks:
+#    - name: Install dependencies
+#      apt: name={{ item }} state=installed
+#      with_items:
+#       - python
+#       - python-setuptools
+#       - python-dev
+#       - build-essential
+#       - python-pip
+#       - python-mysqldb
+#
+#    - name: Install MySQL database
+#      apt:
+#        name: "{{ item }}"
+#        state:  installed
+#      with_items:
+#       - mysql-server
+#       - mysql-client
+#
+#    - name: Start Mysql Service
+#      service:
+#        name: mysql
+#        state: started
+#        enabled: yes
+# ------------------------------
+#           AFTER
+# ------------------------------
+-
+  name: Deploy a web application
+  hosts: db_and_web_server
+  tasks:
+    - name: Install dependencies
+      apt: name={{ item }} state=installed
+      with_items:
+       - python
+       - python-setuptools
+       - python-dev
+       - build-essential
+       - python-pip
+       - python-mysqldb
+
+    - name: Install MySQL database
+      apt:
+        name: "{{ item }}"
+        state:  installed
+      with_items:
+       - mysql-server
+       - mysql-client
+
+    - name: Start Mysql Service
+      service:
+        name: mysql
+        state: started
+        enabled: yes
+
+    - name: Create Application Database
+      mysql_db:
+        name: employee_db
+        state: present

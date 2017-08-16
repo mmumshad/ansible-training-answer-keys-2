@@ -1,0 +1,59 @@
+# Do the same for all the tasks under web application deployment.
+# A new file is created under tasks folder named - deploy_web.yml.
+# Move the below tasks to the new file and add include statement in the main playbook to include the file "tasks/deploy_web.yml"
+##
+#
+## ------------------------------
+##           BEFORE
+## ------------------------------
+#-
+#  name: Deploy a web application
+#  hosts: db_and_web_server
+#  tasks:
+#    - name: Install dependencies
+#      apt: name={{ item }} state=installed
+#      with_items:
+#       - python
+#       - python-setuptools
+#       - python-dev
+#       - build-essential
+#       - python-pip
+#       - python-mysqldb
+#
+#    - include: tasks/deploy_db.yml
+#
+#    - name: Install Python Flask dependencies
+#      pip:
+#        name: '{{ item }}'
+#        state: present
+#      with_items:
+#       - flask
+#       - flask-mysql
+#
+#    - name: Copy web-server code
+#      copy: src=app.py dest=/opt/app.py
+#
+#    - name: Start web-application
+#      shell: FLASK_APP=/opt/app.py nohup flask run --host=0.0.0.0 &
+
+# ------------------------------
+#           AFTER
+# ------------------------------
+-
+  name: Deploy a web application
+  hosts: db_and_web_server
+  tasks:
+    - name: Install dependencies
+      apt: name={{ item }} state=installed
+      with_items:
+       - python
+       - python-setuptools
+       - python-dev
+       - build-essential
+       - python-pip
+       - python-mysqldb
+
+    - include: tasks/deploy_db.yml
+
+    - include: tasks/deploy_web.yml
+

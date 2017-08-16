@@ -1,0 +1,94 @@
+# We will now separate the tasks into different files. I have now created a folder called "tasks"
+# and created two files under it called "deploy_db.yml" and "deploy_web.yml".
+# We will now move the tasks from the main playbook into respective tasks files - deploy_db.yml and deploy_web.yml
+# First, move (simply cut and paste) the below tasks into deploy_db.yml file
+# - Install MySQL database
+# - Start Mysql Service
+# - Create Application Database
+# - Create Application DB User
+#
+# Note, we will leave Install Dependencies there, since it is not specific to database or web.
+# We will add the include statement in the next Exercise
+#
+## ------------------------------
+##           BEFORE
+## ------------------------------
+#-
+#  name: Deploy a web application
+#  hosts: db_and_web_server
+#  tasks:
+#    - name: Install dependencies
+#      apt: name={{ item }} state=installed
+#      with_items:
+#       - python
+#       - python-setuptools
+#       - python-dev
+#       - build-essential
+#       - python-pip
+#       - python-mysqldb
+#
+#    - name: Install MySQL database
+#      apt:
+#        name: "{{ item }}"
+#        state:  installed
+#      with_items:
+#       - mysql-server
+#       - mysql-client
+#
+#    - name: Start Mysql Service
+#      service:
+#        name: mysql
+#        state: started
+#        enabled: yes
+#
+#    - name: Create Application Database
+#      mysql_db: name={{ db_name }} state=present
+#
+#
+#    - name: Create Application DB User
+#      mysql_user: name={{ db_user }} password={{ db_password }} priv='*.*:ALL' host='%' state='present'
+#
+#    - name: Install Python Flask dependencies
+#      pip:
+#        name: '{{ item }}'
+#        state: present
+#      with_items:
+#       - flask
+#       - flask-mysql
+#
+#    - name: Copy web-server code
+#      copy: src=app.py dest=/opt/app.py
+#
+#    - name: Start web-application
+#      shell: FLASK_APP=/opt/app.py nohup flask run --host=0.0.0.0 &
+
+# ------------------------------
+#           AFTER
+# ------------------------------
+-
+  name: Deploy a web application
+  hosts: db_and_web_server
+  tasks:
+    - name: Install dependencies
+      apt: name={{ item }} state=installed
+      with_items:
+       - python
+       - python-setuptools
+       - python-dev
+       - build-essential
+       - python-pip
+       - python-mysqldb
+
+    - name: Install Python Flask dependencies
+      pip:
+        name: '{{ item }}'
+        state: present
+      with_items:
+       - flask
+       - flask-mysql
+
+    - name: Copy web-server code
+      copy: src=app.py dest=/opt/app.py
+
+    - name: Start web-application
+      shell: FLASK_APP=/opt/app.py nohup flask run --host=0.0.0.0 &

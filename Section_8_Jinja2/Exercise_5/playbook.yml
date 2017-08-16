@@ -1,0 +1,29 @@
+# We are trying to write a playbook to generate a file with random name everytime. The first name must be /tmp/random_file_ followed by a random number. eg: /tmp/random_1234
+# Task: Update the task to modify the file name to use a random number suffix anywhere from 0 to 1000.
+# Documentation: http://docs.ansible.com/ansible/latest/playbooks_filters.html#filters-for-formatting-data
+
+# ------------------------------
+#           BEFORE
+# ------------------------------
+#-
+#  name: Generate random file name
+#  hosts: localhost
+#  tasks:
+#  - name: Install dependencies
+#    file:
+#      path: /tmp/random_file
+#      state: touch
+
+
+# ------------------------------
+#           AFTER
+# ------------------------------
+-
+  name: Generate random file name
+  hosts: localhost
+  tasks:
+  - name: Create file
+    file:
+      path: /tmp/random_file"{{ 1000 | random }}"
+      state: touch
+

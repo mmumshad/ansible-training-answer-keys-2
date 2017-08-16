@@ -1,0 +1,114 @@
+# Currently Ansible runs tasks on all of them at once. We would like Ansible to limit execution on just 2 servers at once.
+# Task: Use the serial directive to run the tasks on only 2 servers at a time
+# Documentation: http://docs.ansible.com/ansible/latest/playbooks_async.html
+
+# ------------------------------
+#           BEFORE
+# ------------------------------
+#-
+#  name: Deploy a web application
+#  hosts: app_servers
+#  vars:
+#    db_name: employee_db
+#    db_user: db_user
+#    db_password: Passw0rd
+#  tasks:
+#    - name: Install dependencies
+#      apt: name={{ item }} state=installed
+#      with_items:
+#       - python
+#       - python-setuptools
+#       - python-dev
+#       - build-essential
+#       - python-pip
+#       - python-mysqldb
+#
+#    - name: Install MySQL database
+#      apt:
+#        name: "{{ item }}"
+#        state:  installed
+#      with_items:
+#       - mysql-server
+#       - mysql-client
+#
+#    - name: Start Mysql Service
+#      service:
+#        name: mysql
+#        state: started
+#        enabled: yes
+#
+#    - name: Create Application Database
+#      mysql_db: name={{ db_name }} state=present
+#
+#    - name: Create Application DB User
+#      mysql_user: name={{ db_user }} password={{ db_password }} priv='*.*:ALL' host='%' state='present'
+#
+#    - name: Install Python Flask dependencies
+#      pip:
+#        name: '{{ item }}'
+#        state: present
+#      with_items:
+#       - flask
+#       - flask-mysql
+#
+#    - name: Copy web-server code
+#      copy: src=app.py dest=/opt/app.py
+#
+#    - name: Start web-application
+#      shell: FLASK_APP=/opt/app.py nohup flask run --host=0.0.0.0 &
+
+# ------------------------------
+#           AFTER
+# ------------------------------
+-
+  name: Deploy a web application
+  hosts: app_servers
+  serial: 2
+  vars:
+    db_name: employee_db
+    db_user: db_user
+    db_password: Passw0rd
+  tasks:
+    - name: Install dependencies
+      apt: name={{ item }} state=installed
+      with_items:
+       - python
+       - python-setuptools
+       - python-dev
+       - build-essential
+       - python-pip
+       - python-mysqldb
+
+    - name: Install MySQL database
+      apt:
+        name: "{{ item }}"
+        state:  installed
+      with_items:
+       - mysql-server
+       - mysql-client
+
+    - name: Start Mysql Service
+      service:
+        name: mysql
+        state: started
+        enabled: yes
+
+    - name: Create Application Database
+      mysql_db: name={{ db_name }} state=present
+
+    - name: Create Application DB User
+      mysql_user: name={{ db_user }} password={{ db_password }} priv='*.*:ALL' host='%' state='present'
+
+    - name: Install Python Flask dependencies
+      pip:
+        name: '{{ item }}'
+        state: present
+      with_items:
+       - flask
+       - flask-mysql
+
+    - name: Copy web-server code
+      copy: src=app.py dest=/opt/app.py
+
+    - name: Start web-application
+      shell: FLASK_APP=/opt/app.py nohup flask run --host=0.0.0.0 &

@@ -1,0 +1,49 @@
+# We are given two lists of dependent packages to install. A playbook has been written with a task to install dependencies
+# Task: Identify the unique packages from the two lists (web_dependencies and sql_dependencies) using jinja2 filter union and apply it in the given space under with_items.
+# Documentation: http://docs.ansible.com/ansible/latest/playbooks_filters.html#filters-for-formatting-data
+
+# ------------------------------
+#           BEFORE
+# ------------------------------
+#-
+#  name: Install Dependencies
+#  hosts: localhost
+#  vars:
+#    web_dependencies:
+#         - python
+#         - python-setuptools
+#         - python-dev
+#         - build-essential
+#         - python-pip
+#         - python-mysqldb
+#    sql_dependencies:
+#         - python
+#         - python-mysqldb
+#  tasks:
+#  - name: Install dependencies
+#    apt: name='{{ item }}' state=installed
+#    with_items: '{{  }}'
+#
+
+# ------------------------------
+#           AFTER
+# ------------------------------
+-
+  name: Install Dependencies
+  hosts: localhost
+  vars:
+    web_dependencies:
+         - python
+         - python-setuptools
+         - python-dev
+         - build-essential
+         - python-pip
+         - python-mysqldb
+    sql_dependencies:
+         - python
+         - python-mysqldb
+  tasks:
+  - name: Install dependencies
+    apt: name='{{ item }}' state=installed
+    with_items: '{{ sql_dependencies | union(web_dependencies) }}'
+

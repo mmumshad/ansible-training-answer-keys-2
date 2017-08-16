@@ -1,0 +1,67 @@
+# Let us now add an include statement in the playbook to include the tasks into this playbook.
+# After the first task - "Install dependencies" and before the current second task  "Install Python Flask dependencies" add include statement to include the file "tasks/deploy_db.yml"
+#
+
+# ------------------------------
+#           BEFORE
+# ------------------------------
+#-
+#  name: Deploy a web application
+#  hosts: db_and_web_server
+#  tasks:
+#    - name: Install dependencies
+#      apt: name={{ item }} state=installed
+#      with_items:
+#       - python
+#       - python-setuptools
+#       - python-dev
+#       - build-essential
+#       - python-pip
+#       - python-mysqldb
+#
+#    - name: Install Python Flask dependencies
+#      pip:
+#        name: '{{ item }}'
+#        state: present
+#      with_items:
+#       - flask
+#       - flask-mysql
+#
+#    - name: Copy web-server code
+#      copy: src=app.py dest=/opt/app.py
+#
+#    - name: Start web-application
+#      shell: FLASK_APP=/opt/app.py nohup flask run --host=0.0.0.0 &
+
+# ------------------------------
+#           AFTER
+# ------------------------------
+-
+  name: Deploy a web application
+  hosts: db_and_web_server
+  tasks:
+    - name: Install dependencies
+      apt: name={{ item }} state=installed
+      with_items:
+       - python
+       - python-setuptools
+       - python-dev
+       - build-essential
+       - python-pip
+       - python-mysqldb
+
+    - include: ./tasks/deploy_db.yml
+
+    - name: Install Python Flask dependencies
+      pip:
+        name: '{{ item }}'
+        state: present
+      with_items:
+       - flask
+       - flask-mysql
+
+    - name: Copy web-server code
+      copy: src=app.py dest=/opt/app.py
+
+    - name: Start web-application
+      shell: FLASK_APP=/opt/app.py nohup flask run --host=0.0.0.0 &

@@ -1,0 +1,21 @@
+ In this section we will try to create a complete playbook using the knowledge we gained in the previous course
+ "Ansible for the Absolute Beginners" to deploy a multi-tiered web application.
+ We will start with deploying both web and database tiers on the same server called "db_and_web_server". Refer to the inventory file.
+ In this exercise update the host on the play to work with our target server "db_and_web_server".
+#
+# ------------------------------
+#           BEFORE
+# ------------------------------
+#-
+#  name: Deploy a web application
+#  hosts: localhost
+#  tasks:
+#    - name: Install dependencies
+# ------------------------------
+#           AFTER
+# ------------------------------
+-
+  name: Deploy a web application
+  hosts: db_and_web_server
+  tasks:
+    - name: Install dependencies

@@ -1,0 +1,27 @@
+# Update the msg field in debug task to print - "The name is bond! james bond!"
+# Documentation: http://docs.ansible.com/ansible/latest/playbooks_filters.html#filters-for-formatting-data
+
+# ------------------------------
+#           BEFORE
+# ------------------------------
+#-
+#  name: Test Jinja2 Templating
+#  hosts: localhost
+#  vars:
+#    first_name: James
+#    last_name: Bond
+#  tasks:
+#  - debug:
+#      msg: ''
+# ------------------------------
+#           AFTER
+# ------------------------------
+-
+  name: Test Jinja2 Templating
+  hosts: localhost
+  vars:
+    first_name: james
+    last_name: bond
+  tasks:
+  - debug:
+      msg: 'The name is {{ last_name }}! {{ first_name }} {{ last_name }}!'

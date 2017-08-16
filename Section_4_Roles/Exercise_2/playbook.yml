@@ -1,0 +1,59 @@
+ We have now created a new role using the following command 'ansible-galaxy init flask_web'.
+ This has created a folder structure for us.  See the folder structure in the attached image.
+ Let us move the web related tasks to roles/flask_web/tasks/main.yml file
+ - Install Python Flask dependencies
+ - Copy web-server code
+ - Start web-application
+
+ Note, we will leave Install Dependencies there, since it is not specific to database or web.
+ We will add roles statement in a later Exercise
+
+
+# ------------------------------
+#           BEFORE
+# ------------------------------
+-
+  name: Deploy a web application
+  hosts: db_and_web_server
+  tasks:
+    - name: Install dependencies
+      apt: name={{ item }} state=installed
+      with_items:
+       - python
+       - python-setuptools
+       - python-dev
+       - build-essential
+       - python-pip
+       - python-mysqldb
+
+    - name: Install Python Flask dependencies
+      pip:
+        name: '{{ item }}'
+        state: present
+      with_items:
+       - flask
+       - flask-mysql
+
+    - name: Copy web-server code
+      copy: src=app.py dest=/opt/app.py
+
+    - name: Start web-application
+      shell: FLASK_APP=/opt/app.py nohup flask run --host=0.0.0.0 &
+
+# ------------------------------
+#           AFTER
+# ------------------------------
+-
+  name: Deploy a web application
+  hosts: db_and_web_server
+  tasks:
+    - name: Install dependencies
+      apt: name={{ item }} state=installed
+      with_items:
+       - python
+       - python-setuptools
+       - python-dev
+       - build-essential
+       - python-pip
+       - python-mysqldb
+

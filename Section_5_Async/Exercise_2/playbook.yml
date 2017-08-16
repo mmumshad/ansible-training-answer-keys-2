@@ -1,0 +1,50 @@
+## The default polling interval is 10 seconds. We think that is too often.
+## Task: Change it to poll every 30 seconds.
+## Documentation: http://docs.ansible.com/ansible/latest/playbooks_async.html
+#
+## ------------------------------
+##           BEFORE
+## ------------------------------
+#-
+#  name: Deploy a mysql DB
+#  hosts: db_server
+#  roles:
+#    - python
+#    - mysql_db
+#
+#-
+#  name: Deploy a Web Server
+#  hosts: web_server
+#  roles:
+#    - python
+#    - flask_web
+#
+#-
+#  name: Monitor Web Application for 6 Minutes
+#  hosts: web_server
+#  command: /opt/monitor_webapp.py
+#  async: 360
+
+# ------------------------------
+#           AFTER
+# ------------------------------
+-
+  name: Deploy a mysql DB
+  hosts: db_server
+  roles:
+    - python
+    - mysql_db
+
+-
+  name: Deploy a Web Server
+  hosts: web_server
+  roles:
+    - python
+    - flask_web
+
+-
+  name: Monitor Web Application for 6 Minutes
+  hosts: web_server
+  command: /opt/monitor_webapp.py
+  async: 360
+  poll: 30
