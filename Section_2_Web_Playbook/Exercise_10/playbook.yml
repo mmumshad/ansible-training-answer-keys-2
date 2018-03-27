@@ -59,7 +59,7 @@
 # ------------------------------
 -
   name: Deploy a web application
-  hosts: db_and_web_server1, db_and_web_server2
+  hosts: db_and_web_server
   vars:
     db_name: employee_db
     db_user: db_user
