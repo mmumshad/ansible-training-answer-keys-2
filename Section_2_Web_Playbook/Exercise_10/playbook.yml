@@ -10,7 +10,7 @@
 #  hosts: db_and_web_server
 #  tasks:
 #    - name: Install dependencies
-#      apt: name={{ item }} state=installed
+#      apt: name={{ item }} state=present
 #      with_items:
 #       - python
 #       - python-setuptools
@@ -22,7 +22,7 @@
 #    - name: Install MySQL database
 #      apt:
 #        name: "{{ item }}"
-#        state:  installed
+#        state:  present
 #      with_items:
 #       - mysql-server
 #       - mysql-client
