@@ -1,7 +1,7 @@
     - name: Install MySQL database
       apt:
         name: "{{ item }}"
-        state:  installed
+        state:  present
       with_items:
        - mysql-server
        - mysql-client
