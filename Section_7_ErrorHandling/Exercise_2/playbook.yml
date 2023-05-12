@@ -16,7 +16,7 @@
 #    db_password: Passw0rd
 #  tasks:
 #    - name: Install dependencies
-#      apt: name={{ item }} state=installed
+#      apt: name={{ item }} state=present
 #      with_items:
 #       - python
 #       - python-setuptools
@@ -77,7 +77,7 @@
     db_password: Passw0rd
   tasks:
     - name: Install dependencies
-      apt: name={{ item }} state=installed
+      apt: name={{ item }} state=present
       with_items:
        - python
        - python-setuptools

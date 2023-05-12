@@ -11,7 +11,7 @@
 #  hosts: db_and_web_server
 #  tasks:
 #    - name: Install dependencies
-#      apt: name={{ item }} state=installed
+#      apt: name={{ item }} state=present
 #      with_items:
 #       - python
 #       - python-setuptools
@@ -44,7 +44,7 @@
   hosts: db_and_web_server
   tasks:
     - name: Install dependencies
-      apt: name={{ item }} state=installed
+      apt: name={{ item }} state=present
       with_items:
        - python
        - python-setuptools
